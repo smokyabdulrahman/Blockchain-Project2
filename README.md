@@ -14,39 +14,31 @@ To setup the project for review do the following:
 The file __simpleChain.js__ in the root directory has all the code to be able to test the project, please review the comments in the file and uncomment the code to be able to test each feature implemented:
 
 * Uncomment the function:
-```
+```javascript
 (function theLoop (i) {
 	setTimeout(function () {
 		let blockTest = new Block.Block("Test Block - " + (i + 1));
-		myBlockChain.addNewBlock(blockTest).then((result) => {
+		// Be careful this only will work if your method 'addBlock' in the Blockchain.js file return a Promise
+		myBlockChain.addBlock(blockTest).then((result) => {
 			console.log(result);
 			i++;
 			if (i < 10) theLoop(i);
 		});
-	}, 10000);
+	}, 1000);
   })(0);
 ```
 This function will create 10 test blocks in the chain.
-* Uncomment the function
-```
-myBlockChain.getBlockChain().then((data) => {
-	console.log( data );
-})
-.catch((error) => {
-	console.log(error);
-})
-```
-This function print in the console the list of blocks in the blockchain
-* Uncomment the function
-```
-myBlockChain.getBlock(0).then((block) => {
-	console.log(JSON.stringify(block));
-}).catch((err) => { console.log(err);});
 
+* Uncomment the function
+```javascript
+myBlockChain.getBlock(0).then((block) => {
+	console.log(block);
+}).catch((err) => { console.log(err);});
 ```
 This function get from the Blockchain the block requested.
+
 * Uncomment the function
-```
+```javascript
 myBlockChain.validateBlock(0).then((valid) => {
 	console.log(valid);
 })
@@ -55,11 +47,12 @@ myBlockChain.validateBlock(0).then((valid) => {
 })
 ```
 This function validate and show in the console if the block is valid or not, if you want to modify a block to test this function uncomment this code:
-```
+
+```javascript
 myBlockChain.getBlock(5).then((block) => {
-	let blockAux = block;
+	let blockAux = JSON.parse(block);
 	blockAux.body = "Tampered Block";
-	myBlockChain._modifyBlock(blockAux.height, blockAux).then((blockModified) => {
+	myBlockChain._modifyBlock(blockAux.height, JSON.stringify(blockAux)).then((blockModified) => {
 		if(blockModified){
 			myBlockChain.validateBlock(blockAux.height).then((valid) => {
 				console.log(`Block #${blockAux.height}, is valid? = ${valid}`);
@@ -73,10 +66,10 @@ myBlockChain.getBlock(5).then((block) => {
 	}).catch((err) => { console.log(err);});
 }).catch((err) => { console.log(err);});
 
-myBlockChain.getBlock(6).then((block) => {
-	let blockAux = block;
+myBlockChain.getBlock(6).then((block) => {	
+	let blockAux = JSON.parse(block);
 	blockAux.previousBlockHash = "jndininuud94j9i3j49dij9ijij39idj9oi";
-	myBlockChain._modifyBlock(blockAux.height, blockAux).then((blockModified) => {
+	myBlockChain._modifyBlock(blockAux.height, JSON.stringify(blockAux)).then((blockModified) => {
 		if(blockModified){
 			console.log("The Block was modified");
 		} else {
@@ -85,8 +78,9 @@ myBlockChain.getBlock(6).then((block) => {
 	}).catch((err) => { console.log(err);});
 }).catch((err) => { console.log(err);});
 ```
+
 * Uncomment this function:
-```
+```javascript
 myBlockChain.validateChain().then((errorLog) => {
 	if(errorLog.length > 0){
 		console.log("The chain is not valid:");
@@ -101,7 +95,6 @@ myBlockChain.validateChain().then((errorLog) => {
 	console.log(error);
 })
 ```
-
 This function validates the whole chain and return a list of errors found during the validation.
 
 ## What do I learned with this Project

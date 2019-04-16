@@ -15,7 +15,7 @@ setTimeout(function () {
  ** Function for Create Tests Blocks   ****
  ******************************************/
 
-
+ 
 (function theLoop (i) {
 	setTimeout(function () {
 		let blockTest = new Block.Block("Test Block - " + (i + 1));
