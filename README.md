@@ -1,13 +1,40 @@
-# Project #2. Private Blockchain
+# Project #3. Web Service for a Blockchain
 
-This is Project 2, Private Blockchain, in this project I created the classes to manage my private blockchain, to be able to persist my blochchain I used LevelDB.
+This is Project 3, Web Service for a Blockchain, in this project I used the classes to manage my private blockchain in Project 2, and exposed its functionality through a RESTful end points using __Express/node js__.
 
 ## Setup project for Review.
 
 To setup the project for review do the following:
 1. Download the project.
 2. Run command __npm install__ to install the project dependencies.
-3. Run command __node simpleChain.js__ in the root directory.
+3. Run command __node index.js__ in the root directory.
+4. Go to http://localhost:8000.
+
+## API Documentation
+There are 2 endpoints in this project:
+1. Create a new block -> __POST: /blockchain/__
+
+to test this use the following curl command:
+```bash
+curl -X POST \
+  http://localhost:8000/block/ \
+  -H 'Content-Type: application/json' \
+  -d '{"data": "hello"}'
+```
+
+2. Get a block using its height -> __GET: /blockchain/:blockId__
+
+to test this use the following curl command:
+```bash
+curl -X GET \
+  http://localhost:8000/block/0
+```
+i have given the endpoint __0__ which is the genesis block.
+
+3. Error handeling, there are 2 types of errors:
+   1. blockNotFound: this happens when you query a height that is not there yet.
+   2. blockNotValid: when added block data causes a problem in the block creation function.
+   3. blockHasNoData: when data is not provided
 
 ## Testing the project
 
